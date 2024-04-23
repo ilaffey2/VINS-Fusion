@@ -45,7 +45,7 @@ void reduceVector(vector<int> &v, vector<uchar> status)
     v.resize(j);
 }
 
-FeatureTracker::FeatureTracker() : nh_(new ros::NodeHandle("~")) 
+FeatureTracker::FeatureTracker()
 {
 
     stereo_cam = 0;
@@ -491,6 +491,10 @@ void FeatureTracker::drawTrack(const cv::Mat &imLeft, const cv::Mat &imRight,
         if (!ros::isInitialized()) {
             ROS_WARN("Attempted to publish before ROS initialization. Skipping.");
             return;
+        }
+
+        if (!nh_) { // Check if nh_ is not initialized
+            nh_.reset(new ros::NodeHandle("~")); // Lazily initialize nh_
         }
         // nh_ = ros::NodeHandle("~");
         feature_pub_ = nh_->advertise<sensor_msgs::PointCloud>("feature_points", 1000);
