@@ -489,6 +489,10 @@ void FeatureTracker::drawTrack(const cv::Mat &imLeft, const cv::Mat &imRight,
     }
 
     if (!initialized_) {
+        if (!ros::isInitialized()) {
+            ROS_WARN("Attempted to publish before ROS initialization. Skipping.");
+            return;
+        }
         nh_ = ros::NodeHandle("~");
         feature_pub_ = nh_.advertise<sensor_msgs::PointCloud>("feature_points", 1000);
         initialized_ = true;
