@@ -45,7 +45,7 @@ void reduceVector(vector<int> &v, vector<uchar> status)
     v.resize(j);
 }
 
-FeatureTracker::FeatureTracker()
+FeatureTracker::FeatureTracker() : nh_(std::make_unique<ros::NodeHandle>("~")) {
 {
 
     stereo_cam = 0;
@@ -493,7 +493,7 @@ void FeatureTracker::drawTrack(const cv::Mat &imLeft, const cv::Mat &imRight,
             return;
         }
         nh_ = ros::NodeHandle("~");
-        feature_pub_ = nh_.advertise<sensor_msgs::PointCloud>("feature_points", 1000);
+        feature_pub_ = nh_->advertise<sensor_msgs::PointCloud>("feature_points", 1000);
         initialized_ = true;
     }
     

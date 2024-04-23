@@ -15,6 +15,7 @@
 #include <iostream>
 #include <queue>
 #include <execinfo.h>
+#include <memory>
 #include <csignal>
 #include <opencv2/opencv.hpp>
 #include <eigen3/Eigen/Dense>
@@ -88,7 +89,8 @@ public:
     bool hasPrediction;
     ros::Publisher feature_pub;
 private:
-    ros::NodeHandle nh_;
+    std::unique_ptr<ros::NodeHandle> nh_;
+
     ros::Publisher feature_pub_;
     bool initialized_ = false;
 };
