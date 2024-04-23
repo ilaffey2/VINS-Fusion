@@ -45,7 +45,7 @@ void reduceVector(vector<int> &v, vector<uchar> status)
     v.resize(j);
 }
 
-FeatureTracker::FeatureTracker() : nh_(std::make_unique<ros::NodeHandle>("~")) {
+FeatureTracker::FeatureTracker() : nh_(new ros::NodeHandle("~")) {
 {
 
     stereo_cam = 0;
