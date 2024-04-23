@@ -16,7 +16,6 @@ find_package(catkin REQUIRED COMPONENTS
     camera_models
     image_transport)
 
-
 find_package(OpenCV 3.2 REQUIRED)
 
 # message(WARNING "OpenCV_VERSION: ${OpenCV_VERSION}")
@@ -32,9 +31,7 @@ include_directories(
   ${EIGEN3_INCLUDE_DIR}
 )
 
-catkin_package(
-      CATKIN_DEPENDS  roscpp std_msgs
-    )
+catkin_package()
 
 add_library(vins_lib
     src/estimator/parameters.cpp
