@@ -88,4 +88,8 @@ public:
     bool hasPrediction;
     ros::NodeHandle nh;
     ros::Publisher feature_pub;
+private:
+    ros::NodeHandle nh_;
+    ros::Publisher feature_pub_;
+    bool initialized_ = false;
 };
