@@ -23,7 +23,7 @@
 #include "camodocal/camera_models/CataCamera.h"
 #include "camodocal/camera_models/PinholeCamera.h"
 #include "../estimator/parameters.h"
-#include "../msg/FeaturePoints.msg"
+#include "vins_msgs/FeaturePoints.h"
 #include "../utility/tic_toc.h"
 
 using namespace std;
