@@ -23,6 +23,7 @@
 #include "camodocal/camera_models/CataCamera.h"
 #include "camodocal/camera_models/PinholeCamera.h"
 #include "../estimator/parameters.h"
+#include "../msg/FeaturePoints.msg"
 #include "../utility/tic_toc.h"
 
 using namespace std;
@@ -81,4 +82,6 @@ public:
     bool stereo_cam;
     int n_id;
     bool hasPrediction;
+    ros::NodeHandle nh;
+    ros::Publisher feature_pub;
 };

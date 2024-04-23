@@ -45,11 +45,12 @@ void reduceVector(vector<int> &v, vector<uchar> status)
     v.resize(j);
 }
 
-FeatureTracker::FeatureTracker()
+FeatureTracker::FeatureTracker(): nh("~")
 {
     stereo_cam = 0;
     n_id = 0;
     hasPrediction = false;
+    feature_pub = nh.advertise<sensor_msgs::PointCloud>("feature_points", 1000);
 }
 
 void FeatureTracker::setMask()
@@ -82,6 +83,8 @@ void FeatureTracker::setMask()
         }
     }
 }
+
+
 
 double FeatureTracker::distance(cv::Point2f &pt1, cv::Point2f &pt2)
 {
@@ -482,6 +485,27 @@ void FeatureTracker::drawTrack(const cv::Mat &imLeft, const cv::Mat &imRight,
             cv::arrowedLine(imTrack, curLeftPts[i], mapIt->second, cv::Scalar(0, 255, 0), 1, 8, 0, 0.2);
         }
     }
+
+    // Prepare to publish feature points and IDs
+    sensor_msgs::PointCloud msg;
+    msg.header.stamp = ros::Time::now(); // Set the current time
+    msg.header.frame_id = "camera"; // Adjust according to your TF frames
+
+    for (size_t i = 0; i < curLeftIds.size(); ++i) {
+        geometry_msgs::Point32 point;
+        point.x = curLeftPts[i].x;
+        point.y = curLeftPts[i].y;
+        point.z = 0; // 2D points, z is not used
+        msg.points.push_back(point);
+
+        // Since PointCloud does not directly support IDs, we use a separate channel to store them
+        sensor_msgs::ChannelFloat32 id_channel;
+        id_channel.name = "ids";
+        id_channel.values.push_back(static_cast<float>(curLeftIds[i]));
+        msg.channels.push_back(id_channel);
+    }
+
+    feature_pub.publish(msg);
 
     //draw prediction
     /*
