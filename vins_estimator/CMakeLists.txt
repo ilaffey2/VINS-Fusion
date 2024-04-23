@@ -10,20 +10,12 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     std_msgs
     geometry_msgs
-    message_generation
     nav_msgs
     tf
     cv_bridge
     camera_models
     image_transport)
 
-add_message_files(
-      FeaturePoints.msg
-)
-
-generate_messages(
-  std_msgs
-)
 
 find_package(OpenCV 3.2 REQUIRED)
 
@@ -41,7 +33,7 @@ include_directories(
 )
 
 catkin_package(
-      CATKIN_DEPENDS message_runtime roscpp std_msgs
+      CATKIN_DEPENDS  roscpp std_msgs
     )
 
 add_library(vins_lib
