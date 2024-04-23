@@ -14,7 +14,8 @@ find_package(catkin REQUIRED COMPONENTS
     tf
     cv_bridge
     camera_models
-    image_transport)
+    image_transport
+    vins_msgs)
 
 find_package(OpenCV 3.2 REQUIRED)
 

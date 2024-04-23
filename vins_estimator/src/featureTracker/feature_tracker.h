@@ -25,6 +25,10 @@
 #include "../estimator/parameters.h"
 #include "vins_msgs/FeaturePoints.h"
 #include "../utility/tic_toc.h"
+#include <ros/ros.h>
+#include <std_msgs/Int32MultiArray.h>
+#include <geometry_msgs/Point32.h>
+#include <sensor_msgs/PointCloud.h>
 
 using namespace std;
 using namespace camodocal;
