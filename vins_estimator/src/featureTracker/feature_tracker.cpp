@@ -524,7 +524,7 @@ void FeatureTracker::drawTrack(const cv::Mat &imLeft, const cv::Mat &imRight,
     msg.channels.push_back(id_channel);
 
     // Publish the feature points with IDs
-    feature_pub.publish(msg);
+    feature_pub_.publish(msg);
 
     //draw prediction
     /*
