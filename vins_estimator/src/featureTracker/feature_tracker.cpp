@@ -45,13 +45,12 @@ void reduceVector(vector<int> &v, vector<uchar> status)
     v.resize(j);
 }
 
-FeatureTracker::FeatureTracker(): nh("~")
+FeatureTracker::FeatureTracker()
 {
 
     stereo_cam = 0;
     n_id = 0;
     hasPrediction = false;
-    feature_pub = nh.advertise<sensor_msgs::PointCloud>("feature_points", 1000);
 }
 
 void FeatureTracker::setMask()

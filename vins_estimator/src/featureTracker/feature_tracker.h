@@ -86,7 +86,6 @@ public:
     bool stereo_cam;
     int n_id;
     bool hasPrediction;
-    ros::NodeHandle nh;
     ros::Publisher feature_pub;
 private:
     ros::NodeHandle nh_;
