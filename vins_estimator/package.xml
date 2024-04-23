@@ -43,6 +43,7 @@
   <build_depend>roscpp</build_depend>
   <build_depend>image_transport</build_depend>
   <build_depend>camera_models</build_depend>
+  <build_depend>vins_msgs</build_depend>
 
   <run_depend>roscpp</run_depend>
   <run_depend>image_transport</run_depend>

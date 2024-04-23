@@ -47,6 +47,7 @@ void reduceVector(vector<int> &v, vector<uchar> status)
 
 FeatureTracker::FeatureTracker()
 {
+
     stereo_cam = 0;
     n_id = 0;
     hasPrediction = false;
@@ -82,6 +83,8 @@ void FeatureTracker::setMask()
         }
     }
 }
+
+
 
 double FeatureTracker::distance(cv::Point2f &pt1, cv::Point2f &pt2)
 {
@@ -441,6 +444,7 @@ vector<cv::Point2f> FeatureTracker::ptsVelocity(vector<int> &ids, vector<cv::Poi
     return pts_velocity;
 }
 
+
 void FeatureTracker::drawTrack(const cv::Mat &imLeft, const cv::Mat &imRight, 
                                vector<int> &curLeftIds,
                                vector<cv::Point2f> &curLeftPts, 
@@ -482,6 +486,45 @@ void FeatureTracker::drawTrack(const cv::Mat &imLeft, const cv::Mat &imRight,
             cv::arrowedLine(imTrack, curLeftPts[i], mapIt->second, cv::Scalar(0, 255, 0), 1, 8, 0, 0.2);
         }
     }
+
+    if (!initialized_) {
+        if (!ros::isInitialized()) {
+            ROS_WARN("Attempted to publish before ROS initialization. Skipping.");
+            return;
+        }
+
+        if (!nh_) { // Check if nh_ is not initialized
+            nh_.reset(new ros::NodeHandle("~")); // Lazily initialize nh_
+        }
+        // nh_ = ros::NodeHandle("~");
+        feature_pub_ = nh_->advertise<sensor_msgs::PointCloud>("feature_points", 1000);
+        initialized_ = true;
+    }
+    
+    sensor_msgs::PointCloud msg;
+    msg.header.stamp = ros::Time::now(); // Use the current time
+    msg.header.frame_id = "camera_frame"; // Adjust this to your camera frame ID
+
+    sensor_msgs::ChannelFloat32 id_channel;
+    id_channel.name = "feature_ids";
+
+    for (size_t i = 0; i < curLeftIds.size(); ++i) {
+        // Add each feature point to the point cloud message
+        geometry_msgs::Point32 point;
+        point.x = curLeftPts[i].x;
+        point.y = curLeftPts[i].y;
+        point.z = 0; // Since these are 2D points, z is set to 0
+        msg.points.push_back(point);
+
+        // Add the corresponding feature ID to the channel
+        id_channel.values.push_back(static_cast<float>(curLeftIds[i]));
+    }
+
+    // Add the ID channel to the point cloud message
+    msg.channels.push_back(id_channel);
+
+    // Publish the feature points with IDs
+    feature_pub_.publish(msg);
 
     //draw prediction
     /*

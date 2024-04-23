@@ -15,6 +15,7 @@
 #include <iostream>
 #include <queue>
 #include <execinfo.h>
+#include <memory>
 #include <csignal>
 #include <opencv2/opencv.hpp>
 #include <eigen3/Eigen/Dense>
@@ -23,7 +24,12 @@
 #include "camodocal/camera_models/CataCamera.h"
 #include "camodocal/camera_models/PinholeCamera.h"
 #include "../estimator/parameters.h"
+#include "vins_msgs/FeaturePoints.h"
 #include "../utility/tic_toc.h"
+#include <ros/ros.h>
+#include <std_msgs/Int32MultiArray.h>
+#include <geometry_msgs/Point32.h>
+#include <sensor_msgs/PointCloud.h>
 
 using namespace std;
 using namespace camodocal;
@@ -81,4 +87,9 @@ public:
     bool stereo_cam;
     int n_id;
     bool hasPrediction;
+private:
+    std::unique_ptr<ros::NodeHandle> nh_;
+
+    ros::Publisher feature_pub_;
+    bool initialized_ = false;
 };
